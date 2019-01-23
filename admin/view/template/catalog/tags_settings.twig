@@ -1,0 +1,313 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-tag" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-tag" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+            <li><a href="#tab-import" data-toggle="tab">{{ tab_import }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active in" id="tab-general">
+              <div class="tab-content">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_etopd }}">{{ entry_etopd }}</span></label>
+                  <div class="col-sm-10">
+                     <label class="radio-inline">
+                      {% if setting_etopd %}
+                      <input type="radio" name="setting_etopd" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="setting_etopd" value="1" />
+                      {{ text_yes }}
+                      {% endif %} 
+                    </label>
+                    <label class="radio-inline">
+                      {% if not setting_etopd %}
+                      <input type="radio" name="setting_etopd" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="setting_etopd" value="0" />
+                      {{ text_no }}
+                      {% endif %} 
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_ebottomd }}">{{ entry_ebottomd }}</span></label>
+                  <div class="col-sm-10">
+                     <label class="radio-inline">
+                      {% if setting_ebottomd %}
+                      <input type="radio" name="setting_ebottomd" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="setting_ebottomd" value="1" />
+                      {{ text_yes }}
+                      {% endif %} 
+                    </label>
+                    <label class="radio-inline">
+                      {% if not setting_ebottomd %}
+                      <input type="radio" name="setting_ebottomd" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="setting_ebottomd" value="0" />
+                      {{ text_no }}
+                      {% endif %} 
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_only }}">{{ entry_only }}</span></label>
+                  <div class="col-sm-10">
+                     <label class="radio-inline">
+                      {% if setting_only %}
+                      <input type="radio" name="setting_only" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="setting_only" value="1" />
+                      {{ text_yes }}
+                      {% endif %} 
+                    </label>
+                    <label class="radio-inline">
+                      {% if not setting_only %}
+                      <input type="radio" name="setting_only" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="setting_only" value="0" />
+                      {{ text_no }}
+                      {% endif %} 
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_scategory }}">{{ entry_scategory }}</span></label>
+                  <div class="col-sm-10">
+                     <label class="radio-inline">
+                      {% if setting_scategory %}
+                      <input type="radio" name="setting_scategory" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="setting_scategory" value="1" />
+                      {{ text_yes }}
+                      {% endif %} 
+                    </label>
+                    <label class="radio-inline">
+                      {% if not setting_scategory %}
+                      <input type="radio" name="setting_scategory" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="setting_scategory" value="0" />
+                      {{ text_no }}
+                      {% endif %} 
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_count }}">{{ entry_count }}</span></label>
+                  <div class="col-sm-10">
+                     <label class="radio-inline">
+                      {% if setting_count %}
+                      <input type="radio" name="setting_count" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="setting_count" value="1" />
+                      {{ text_yes }}
+                      {% endif %} 
+                    </label>
+                    <label class="radio-inline">
+                      {% if not setting_count %}
+                      <input type="radio" name="setting_count" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="setting_count" value="0" />
+                      {{ text_no }}
+                      {% endif %} 
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_related }}">{{ entry_related }}</span></label>
+                  <div class="col-sm-10">
+                     <label class="radio-inline">
+                      {% if setting_related %}
+                      <input type="radio" name="setting_related" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="setting_related" value="1" />
+                      {{ text_yes }}
+                      {% endif %} 
+                    </label>
+                    <label class="radio-inline">
+                      {% if not setting_related %}
+                      <input type="radio" name="setting_related" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="setting_related" value="0" />
+                      {{ text_no }}
+                      {% endif %} 
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-import">
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="setting_delimiter">{{ entry_delimiter }}</label>
+                  <div class="col-sm-10">
+                      <input type="text" id="setting_delimiter" name="setting_delimiter" value="{{ setting_delimiter }}" class="form-control">
+                      <p>{{ help_delimiter }}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="template_name">{{ entry_template_name }}</label>
+                  <div class="col-sm-10">
+                      <input type="text" id="template_name" name="setting_template_name" value="{{ setting_template_name }}" class="form-control">
+                      <p>{{ available_tags }}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="template_h1">{{ entry_template_h1 }}</label>
+                  <div class="col-sm-10">
+                      <input type="text" id="template_h1" name="setting_template_h1" value="{{ setting_template_h1 }}" class="form-control">
+                      <p>{{ available_tags }}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="template_desc1">{{ entry_template_desc1 }}</label>
+                  <div class="col-sm-10">
+                      <textarea id="template_desc1" name="setting_template_desc1" rows="7" class="form-control">{{ setting_template_desc1 }}</textarea>
+                      <p>{{ available_tags }}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="template_desc2">{{ entry_template_desc2 }}</label>
+                  <div class="col-sm-10">
+                      <textarea id="template_desc2" name="setting_template_desc2" rows="7" class="form-control">{{ setting_template_desc2 }}</textarea>
+                      <p>{{ available_tags }}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="template_meta_title">{{ entry_template_meta_title }}</label>
+                  <div class="col-sm-10">
+                      <input type="text" id="template_meta_title" name="setting_template_meta_title" value="{{ setting_template_meta_title }}" class="form-control">
+                      <p>{{ available_tags }}</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="template_meta_desc">{{ entry_template_meta_desc }}</label>
+                  <div class="col-sm-10">
+                      <textarea id="template_meta_desc" name="setting_template_meta_desc" rows="3" class="form-control">{{ setting_template_meta_desc }}</textarea>
+                      <p>{{ available_tags }}</p>
+                  </div>
+                </div>   
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_translit }}</label>
+                  <div class="col-sm-10">
+                     <label class="radio-inline">
+                      {% if setting_translit %}
+                      <input type="radio" name="setting_translit" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="setting_translit" value="1" />
+                      {{ text_yes }}
+                      {% endif %} 
+                    </label>
+                    <label class="radio-inline">
+                      {% if not setting_translit %}
+                      <input type="radio" name="setting_translit" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="setting_translit" value="0" />
+                      {{ text_no }}
+                      {% endif %} 
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_update }}</label>
+                  <div class="col-sm-10">
+                     <label class="radio-inline">
+                      {% if setting_update %}
+                      <input type="radio" name="setting_update" value="1" checked="checked" />
+                      {{ text_yes }}
+                      {% else %}
+                      <input type="radio" name="setting_update" value="1" />
+                      {{ text_yes }}
+                      {% endif %} 
+                    </label>
+                    <label class="radio-inline">
+                      {% if not setting_update %}
+                      <input type="radio" name="setting_update" value="0" checked="checked" />
+                      {{ text_no }}
+                      {% else %}
+                      <input type="radio" name="setting_update" value="0" />
+                      {{ text_no }}
+                      {% endif %} 
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_autoproducts }}</label>
+                  <div class="col-sm-10">
+                    <div class="row">
+                    <div class="col-sm-6">
+                    <label class="radio">
+                      <input type="radio" name="setting_autoproducts" value="0" {% if not setting_autoproducts %}checked="checked"{% endif %}/> 
+                      {{ text_no }}
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="setting_autoproducts" value="1" {% if setting_autoproducts == 1 %}checked="checked"{% endif %}/> 
+                      {{ entry_autoproducts1 }}
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="setting_autoproducts" value="2" {% if setting_autoproducts == 2 %}checked="checked"{% endif %}/> 
+                      {{ entry_autoproducts2 }}
+                    </label>
+                    <input type="text" name="setting_exclude" value="{{ setting_exclude }}" placeholder="{{ entry_exclude }}" class="form-control">
+                      <p>{{ entry_exclude }}</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="alert alert-info">{{ help_autoproducts }}</div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </form>
+      </div>
+      <div style="background: #233746;color: #ffffff;font-size: 130%;padding: 10px;border-color: #233746;border-radius: 3px;margin-top: 20px;">Еще больше модулей для Opencart 3.x на нашем сайте <a style="color: #fffc00;" href="https://opencart3x.ru/">opencart3x.ru </a>!</div>
+    </div>
+  </div>
+<script type="text/javascript"><!--
+  $('#language a:first').tab('show');
+</script>
+</div>
+{{ footer }}

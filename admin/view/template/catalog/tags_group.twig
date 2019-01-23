@@ -1,0 +1,176 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-tag" class="form-horizontal">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <button class="btn btn-primary" id="add_option" title="{{ text_add_option }}" data-toggle="tooltip" type="button" data-original-title="{{ text_add_option }}">
+                <i class="fa fa-plus-circle"></i>&nbsp;{{ text_add_option }}
+              </button>
+              <button class="btn btn-primary" id="add_attribute" title="{{ text_add_attribute }}" data-toggle="tooltip" type="button" data-original-title="{{ text_add_attribute }}">
+                <i class="fa fa-plus-circle"></i>&nbsp;{{ text_add_attribute }}
+              </button>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label class="col-sm-1 control-label" for="category_id">{{ text_category }}</label>
+              <div class="col-sm-2">
+                <select class="form-control" name="category_id" id="category_id">
+                  <option></option>
+                  {% for category in categories %}
+                    <option value="{{ category.category_id }}">{{ category.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12" id="filter">
+
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label class="col-sm-1 control-label" for="category_id">{{ text_tag }}</label>
+              <div class="col-sm-2">
+                <select class="form-control" name="tag_id" id="tag_id">
+                  <option></option>
+                  {% for tag in tags %}
+                    <option value="{{ tag.tag_id }}">{{ tag.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-sm-1">
+                <button class="btn btn-success" id="run" title="{{ text_run }}" data-toggle="tooltip" type="button" data-original-title="{{ text_run }}" onClick="$('#form-tag').submit()">
+                  <i class="fa fa-pencil"></i>&nbsp;{{ text_run }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div style="background: #233746;color: #ffffff;font-size: 130%;padding: 10px;border-color: #233746;border-radius: 3px;margin-top: 20px;">Еще больше модулей для Opencart 3.x на нашем сайте <a style="color: #fffc00;" href="https://opencart3x.ru/">opencart3x.ru </a>!</div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  var i = 1; 
+  $(function(){
+    $("#add_option").on('click', function(){
+      html = '<div class="form-group" id="item_'+i+'">';
+        html += '<label class="col-sm-1 control-label" for="filter_'+i+'">';
+          html += '{{ text_option_name }}';
+        html += '</label>';
+        html += '<div class="col-sm-2">';
+          html += '<select class="form-control opt" name="filter['+i+']" id="filter_'+i+'">';
+            html += '<option></option>';
+            {% for option in options %}
+              html += '<option value="{{ option.option_id}}">{{ option.name}}</option>';
+            {% endfor %}
+          html += '</select>';
+        html += '</div>';
+        html += '<label class="col-sm-1 control-label" for="filterv_'+i+'">';
+          html += '{{ text_option_value }}';
+        html += '</label>';
+        html += '<div class="col-sm-2">';
+          html += '<select class="form-control optv" name="filterv['+i+']" id="filterv_'+i+'">';
+            html += '<option></option>';
+          html += '</select>';
+        html += '</div>';
+        html += '<div class="col-sm-1">';
+          html += '<div">';
+            html += '<button class="btn btn-danger remove" id="'+i+'" type="button">';
+              html += '<i class="fa fa-minus-circle"></i>';
+            html += '</button>';
+          html += '</div>';
+        html += '</div>';
+      html += '</div>';
+      $('#filter').append(html);
+      i++;
+    });
+
+    $("body").on('change', '.opt', function(){
+      option_id = $(this).val();
+      opt = $(this).attr('id');
+      opt = opt.split('_');
+      opt = opt[1];
+      opt_name = $("#filter_"+opt+" option:selected").text();
+      $("#filterv_"+opt).empty();
+      $.ajax({
+        url: 'index.php?route=catalog/option/autocomplete&user_token={{ user_token }}&filter_name='+opt_name,
+        dataType: 'json',
+        success: function(json) {
+          for (k in json){
+            if (json[k]['option_id'] == option_id){
+              for (oopt in json[k]['option_value']){
+                $("#filterv_"+opt).append('<option value="'+json[k]['option_value'][oopt]['option_value_id']+'">'+json[k]['option_value'][oopt]['name']+'</option>');
+              }
+            }
+          }
+        }
+      });
+    });
+
+    $("#add_attribute").on('click', function(){
+      html = '<div class="form-group" id="item_'+i+'">';
+        html += '<label class="col-sm-1 control-label" for="filter_'+i+'">';
+          html += '{{ text_attribute_name }}';
+        html += '</label>';
+        html += '<div class="col-sm-2">';
+          html += '<select class="form-control attr" name="filtera['+i+']" id="filter_'+i+'">';
+            html += '<option></option>';
+            {% for attribute in attributes %}
+              html += '<option value="{{ attribute.attribute_id}}">{{ attribute.name}}</option>';
+            {% endfor %}
+          html += '</select>';
+        html += '</div>';
+        html += '<label class="col-sm-1 control-label" for="filterv_'+i+'">';
+          html += '{{ text_attribute_value }}';
+        html += '</label>';
+        html += '<div class="col-sm-2">';
+          html += '<input type="text" class="form-control attrv" name="filterva['+i+']" id="filterv_'+i+'">';
+        html += '</div>';
+        html += '<div class="col-sm-1">';
+          html += '<div">';
+            html += '<button class="btn btn-danger remove" id="'+i+'" type="button">';
+              html += '<i class="fa fa-minus-circle"></i>';
+            html += '</button>';
+          html += '</div>';
+        html += '</div>';
+      html += '</div>';
+      $('#filter').append(html);
+      i++;
+    });
+
+    $("body").on('click','.remove', function(){
+      $("#item_"+$(this).attr('id')).remove();
+    })
+  })
+</script>
+{{ footer }} 

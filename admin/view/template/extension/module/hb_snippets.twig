@@ -1,0 +1,441 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-latest" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+	  </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+ 
+  <div class="container-fluid">
+
+	{% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+      	<center><div id='loadgif' style='display:none;'><img src='view/image/loading-bar.gif'/></div></center>
+		<div id="msgoutput" style="text-align:center;"></div>
+	
+          <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-language" class="form-horizontal">
+		     <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab-kg" data-toggle="tab">{{ tab_kg }}</a></li>
+				<li><a href="#tab-product" data-toggle="tab">{{ tab_product }}</a></li>
+				<li><a href="#tab-contact" data-toggle="tab">{{ tab_contact }}</a></li>
+				<li><a href="#tab-breadcrumb" data-toggle="tab">{{ tab_breadcrumb }}</a></li>
+				<li><a href="#tab-og" data-toggle="tab">{{ tab_og }}</a></li>
+	          </ul>
+			  <div class="tab-content">
+			  
+<style>
+.accordion {
+	margin-bottom: 20px;
+}
+.accordion-group {
+    margin-bottom: 2px;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+	background-color:#fcfcfc;
+}
+.accordion-heading {
+    border-bottom: 0;
+	background-color:#999999;
+	
+}.accordion-heading a{
+color:#FFFFFF;
+font-weight:bold;
+font-size:12px;
+}
+
+.accordion-toggle {
+    display: block;
+    padding: 8px 15px;
+}
+.accordion-toggle {
+    cursor: pointer;
+}.accordion-inner {
+    padding: 9px 15px;
+    border-top: 1px solid #e5e5e5;
+}
+</style>
+					 <div class="tab-pane active" id="tab-kg">
+					 <div class="accordion" id="kg">
+					  <div class="accordion-group">
+						<div class="accordion-heading">
+						  <a class="accordion-toggle" data-toggle="collapse" data-parent="#kg" href="#collapseOne">
+							{{ text_kg_logo }}
+						  </a>
+						</div>
+						<div id="collapseOne" class="accordion-body collapse in">
+						  <div class="accordion-inner">
+						  	<div class="form-group">
+								<label class="col-sm-2 control-label">Добавить ссылку на лого</label>
+								<div class="col-sm-10">
+									<select name="hb_snippets_logo_url" class="form-control">
+									  <option value="1" {% if hb_snippets_logo_url == '1' %} {{ 'selected' }} {% endif %} >{{ text_enable }}</option>
+									  <option value="0" {% if hb_snippets_logo_url == '0' %} {{ 'selected' }} {% endif %} >{{ text_disable }}</option>
+									 </select>
+								</div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					  <div class="accordion-group">
+						<div class="accordion-heading">
+						  <a class="accordion-toggle" data-toggle="collapse" data-parent="#kg" href="#collapseTwo">
+							{{ text_kg_contact }}
+						  </a>
+						</div>
+						<div id="collapseTwo" class="accordion-body collapse">
+						  <div class="accordion-inner">
+								<div class="form-group">
+								<label class="col-sm-2 control-label">Контакты в "Поисковой выдаче"</label>
+								<div class="col-sm-10">
+									<select name="hb_snippets_contact_enable" class="form-control">
+									  <option value="1" {% if hb_snippets_contact_enable == '1' %} {{ 'selected' }} {% endif %} >{{ text_enable }}</option>
+									  <option value="0" {% if hb_snippets_contact_enable == '0' %} {{ 'selected' }} {% endif %} >{{ text_disable }}</option>
+									 </select>
+								</div>
+							</div>	
+							<div id="corp_contact">
+							{% set contact_row = 0 %}
+							{% if hb_snippets_contact %}
+							{% for contact in hb_snippets_contact %}							
+								<div class="form-group" id="contact-row{{ contact_row }}">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-4"><input type="text" placeholder="+7-999-123-4567" name="hb_snippets_contact[{{ contact_row }}][n]" class="form-control" value="{{ contact.n }}"></div>
+								<div class="col-sm-4"><select name="hb_snippets_contact[{{ contact_row }}][t]" class="form-control">
+								<option {% if contact.t == 'Customer Service' %} {{ 'selected' }} {% endif %} >Customer Service</option>
+								<option {% if contact.t == 'Customer Support' %} {{ 'selected' }} {% endif %} >Customer Support</option>
+								<option {% if contact.t == 'Technical Support' %} {{ 'selected' }} {% endif %} >Technical Support</option>
+								<option {% if contact.t == 'Billing Support' %} {{ 'selected' }} {% endif %} >Billing Support</option>
+								<option {% if contact.t == 'Bill Payment' %} {{ 'selected' }} {% endif %} >Bill Payment</option>
+								<option {% if contact.t == 'Sales' %} {{ 'selected' }} {% endif %} >Sales</option>
+								<option {% if contact.t == 'Reservations' %} {{ 'selected' }} {% endif %} >Reservations</option>
+								<option {% if contact.t == 'Credit Card Support' %} {{ 'selected' }} {% endif %} >Credit Card Support</option>
+								<option {% if contact.t == 'Emergency' %} {{ 'selected' }} {% endif %} >Emergency</option>
+								<option {% if contact.t == 'Baggage Tracking' %} {{ 'selected' }} {% endif %} >Baggage Tracking</option>
+								<option {% if contact.t == 'Roadside Assistance' %} {{ 'selected' }} {% endif %} >Roadside Assistance</option>
+								<option {% if contact.t == 'Package Tracking' %} {{ 'selected' }} {% endif %} >Package Tracking</option>
+								</select>
+								</div>
+								<div class="col-sm-2">
+								<button type="button" onclick="$('#contact-row{{ contact_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></div>
+								</div>
+								{% set contact_row = contact_row + 1 %}
+							{% endfor %}
+							{% endif %}		
+							</div>
+							<a onclick="addcontact();" class="btn btn-default">Добавить телефон</a>
+							
+						  </div>
+						</div>
+					  </div>
+					  <div class="accordion-group">
+						<div class="accordion-heading">
+						  <a class="accordion-toggle" data-toggle="collapse" data-parent="#kg" href="#collapseThree">
+							{{ text_kg_social }}
+						  </a>
+						</div>
+						<div id="collapseThree" class="accordion-body collapse">
+						  <div class="accordion-inner">
+						  	<div class="form-group">
+								<label class="col-sm-2 control-label">Профиль в соцсетях в "Поисковой выдаче"</label>
+								<div class="col-sm-10">
+									<select name="hb_snippets_social_enable" class="form-control">
+									  <option value="1" {% if hb_snippets_social_enable == '1' %} {{ 'selected' }} {% endif %} >{{ text_enable }}</option>
+									  <option value="0" {% if hb_snippets_social_enable == '0' %} {{ 'selected' }} {% endif %} >{{ text_disable }}</option>
+									 </select>
+								</div>
+							</div>
+								<div id="corp_social">
+									{% set social_row = 0 %}
+									{% if hb_snippets_socials%}
+									{% for social in hb_snippets_socials %}							
+										<div class="form-group" id="social-row{{ social_row }}">
+										<div class="col-sm-2"></div>
+										<div class="col-sm-8"><input type="text" placeholder="https://www.facebook.com/your-profile" name="hb_snippets_socials[{{ social_row }}]" class="form-control" value="{{ social }}"></div>
+										<div class="col-sm-2">
+										<button type="button" onclick="$('#social-row{{ social_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></div>
+										</div>
+										{% set social_row = social_row + 1 %}
+									{% endfor %}
+									{% endif %}	
+								</div>
+							<a onclick="addsocial();" class="btn btn-default">Добавить профиль</a>	
+						  </div>
+						</div>
+					  </div>
+					  <div class="accordion-group">
+						<div class="accordion-heading">
+						  <a class="accordion-toggle" data-toggle="collapse" data-parent="#kg" href="#collapsesitelink">
+							{{ text_kg_searchbox }}
+						  </a>
+						</div>
+					  <div id="collapsesitelink" class="accordion-body collapse">
+						  <div class="accordion-inner">
+						  	<div class="form-group">
+								<label class="col-sm-2 control-label">Поле "Поиск" в "Поисковой выдаче"</label>
+								<div class="col-sm-10">
+									<select name="hb_snippets_search_enable" class="form-control">
+									  <option value="1" {% if hb_snippets_search_enable == '1' %} {{ 'selected' }} {% endif %} >{{ text_enable }}</option>
+									  <option value="0" {% if hb_snippets_search_enable == '0' %} {{ 'selected' }} {% endif %} >{{ text_disable }}</option>
+									 </select>
+								</div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					  <div class="accordion-group">
+						<div class="accordion-heading" style="background-color:#669966;">
+						  <a class="accordion-toggle" data-toggle="collapse" data-parent="#kg" href="#collapseFour">
+							<i class="fa fa-gears"></i> {{ text_kg_generate }}
+						  </a>
+						</div>
+						<div id="collapseFour" class="accordion-body collapse">
+						  <div class="accordion-inner">
+						  	<div class="form-group">
+								<label class="col-sm-2 control-label">Knowledge Graph (Граф знаний)</label>
+								<div class="col-sm-10">
+									<select name="hb_snippets_kg_enable" class="form-control">
+									  <option value="1" {% if hb_snippets_kg_enable == '1' %} {{ 'selected' }} {% endif %} >{{ text_enable }}</option>
+									  <option value="0" {% if hb_snippets_kg_enable == '0' %} {{ 'selected' }} {% endif %} >{{ text_disable }}</option>
+									 </select>
+								</div>
+							</div>
+							<strong>Сначала сохраните настройки и тогда нажмите кнопку ниже и опять сохраните</strong><br>
+							<a onclick="generate_kg();" class="btn btn-warning">Сгенерировать JSON-LD</a>
+							<div class="form-group">
+								<label class="col-sm-2 control-label"></label>
+								<div class="col-sm-10">
+									<textarea name="hb_snippets_kg_data"  id="hb_snippets_kg_data" rows="10" class="form-control">{{ hb_snippets_kg_data }}
+									 </textarea>
+								</div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					
+					</div>
+					<div class="tab-pane" id="tab-product">
+						  	<div class="form-group">
+								<label class="col-sm-2 control-label">Микроразметка страницы товара</label>
+								<div class="col-sm-10">
+									<select name="hb_snippets_prod_enable" class="form-control">
+									  <option value="1" {% if hb_snippets_prod_enable == '1' %} {{ 'selected' }} {% endif %} >{{ text_enable }}</option>
+									  <option value="0" {% if hb_snippets_prod_enable == '0' %} {{ 'selected' }} {% endif %} >{{ text_disable }}</option>
+									 </select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">Проверка микроразметки</label>
+								<div class="col-sm-10">
+									<a href="https://search.google.com/structured-data/testing-tool" target="_blank">Сервис от Google</a><br>
+									<a href="https://webmaster.yandex.ru/tools/microtest/" target="_blank">Сервис от Яндекс</a>
+								</div>
+							</div>
+				   </div>
+					
+					<div class="tab-pane" id="tab-contact">
+					<h4>{{ text_header_local }}</h4>
+					<table class="table table-hover">
+			              <tr>
+			                <td>{{ col_business_name }}</td>
+			                <td><input type="text" class="form-control" name="hb_snippets_local_name" id="hb_snippets_local_name" value="{{ hb_snippets_local_name }}" /></td>
+			              </tr>
+						 <tr>
+			                <td>{{ col_address }}</td>
+			                <td><input type="text" class="form-control" name="hb_snippets_local_st" id="hb_snippets_local_st" value="{{ hb_snippets_local_st }}" /></td>
+			              </tr>
+			              <tr>
+			                <td>{{ col_locality }}</td>
+			                <td><input type="text" class="form-control" name="hb_snippets_local_location" id="hb_snippets_local_location" value="{{ hb_snippets_local_location }}" /></td>
+			              </tr>
+						  <tr>
+			                <td>{{ col_state }}</td>
+			                <td><input type="text" class="form-control" name="hb_snippets_local_state" id="hb_snippets_local_state" value="{{ hb_snippets_local_state }}" /></td>
+			              </tr>
+			              <tr>
+			                <td>{{ col_postal }}</td>
+			               <td><input type="text" class="form-control" name="hb_snippets_local_postal" id="hb_snippets_local_postal" value="{{ hb_snippets_local_postal }}" /></td>
+			              </tr>
+						  <tr>
+			                <td>{{ col_country }}</td>
+			                <td><input type="text" class="form-control" name="hb_snippets_local_country" id="hb_snippets_local_country" value="{{ hb_snippets_local_country }}" /></td>
+			              </tr>
+						  <tr>
+			                <td>{{ col_store_image }}</td>
+			                <td><input type="text" class="form-control" name="hb_snippets_store_image" id="hb_snippets_store_image" value="{{ hb_snippets_store_image }}" placeholder = "Ссылка на фото локального магазина" required/></td>
+			              </tr>
+						  <tr>
+			                <td>{{ col_price_range }}</td>
+			                <td><input type="text" class="form-control" name="hb_snippets_price_range" id="hb_snippets_price_range" value="{{ hb_snippets_price_range }}" placeholder="0 руб. - 20000 руб." required /></td>
+			              </tr>
+						  <tr>
+						  <td></td>
+						  <td><a class="btn btn-primary" onclick="generatelocalsnippet()">{{ btn_generate }}</a> <span id='loadgif2' style='display:none;'><img src='view/image/loading.gif'/></span></td>
+						  </tr>
+						  <tr>
+			                <td>{{ col_local_snippet }}</td>
+			               <td><textarea name="hb_snippets_local_snippet" id="hb_snippets_local_snippet" rows="10" cols="60">{{ hb_snippets_local_snippet }}</textarea></td>
+			              </tr>
+						  <tr>
+					          <td>{{ col_enable }}</td>
+					          <td><select name="hb_snippets_local_enable" class="form-control">
+							  <option value="y" {% if hb_snippets_local_enable == 'y' %} {{ 'selected' }} {% endif %} >Да</option>
+							  <option value="n" {% if hb_snippets_local_enable == 'n' %} {{ 'selected' }} {% endif %} >Нет</option>
+							  </select></td>
+					</tr>
+			       </table>
+				   </div>
+				   <div class="tab-pane" id="tab-breadcrumb">
+				   		<div class="form-group">
+								<label class="col-sm-2 control-label">"Хлебные крошки"</label>
+								<div class="col-sm-10">
+									<select name="hb_snippets_bc_enable" class="form-control">
+									  <option value="1" {% if hb_snippets_bc_enable == '1' %} {{ 'selected' }} {% endif %} >{{ text_enable }}</option>
+									  <option value="0" {% if hb_snippets_bc_enable == '0' %} {{ 'selected' }} {% endif %} >{{ text_disable }}</option>
+									 </select>
+								</div>
+						</div>
+				   </div>
+				    
+				    <div class="tab-pane" id="tab-og">
+				   		
+						<div class="form-group">
+								<label class="col-sm-4 control-label">Разметка OpenGraph</label>
+								<div class="col-sm-8">
+									<select name="hb_snippets_og_enable" class="form-control">
+									  <option value="1" {% if hb_snippets_og_enable == '1' %} {{ 'selected' }} {% endif %} >{{ text_enable }}</option>
+									  <option value="0" {% if hb_snippets_og_enable == '0' %} {{ 'selected' }} {% endif %} >{{ text_disable }}</option>
+									 </select>
+								</div>
+						</div>
+						<div class="form-group">
+								<label class="col-sm-4 control-label">Шаблон названия товара<br>Шорткоды: {name}, {price}, {brand}, {model}</label>
+								<div class="col-sm-8">
+									<input name="hb_snippets_ogp" class="form-control" value="{{ hb_snippets_ogp }}">
+								</div>
+						</div>
+						<div class="form-group">
+								<label class="col-sm-4 control-label">Шаблон названия категории<br>Шорткоды: {name}</label>
+								<div class="col-sm-8">
+									<input name="hb_snippets_ogc" class="form-control" value="{{ hb_snippets_ogc }}">
+								</div>
+						</div>
+
+						<div class="form-group">
+								<label class="col-sm-2 control-label">Проверка OpenGraph</label>
+								<div class="col-sm-10">
+									<a href="http://opengraphcheck.com/" target="_blank">http://opengraphcheck.com/</a>
+								</div>
+						</div>
+				   </div>
+				   
+				   </div>
+          </form>
+    	
+      </div>
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript">
+function generatelocalsnippet(){
+$('#loadgif2').show();
+	$.ajax({
+		  type: 'post',
+		  url: 'index.php?route=extension/module/hb_snippets/generatelocalsnippet&user_token={{ user_token }}',
+		  data: {name: $('#hb_snippets_local_name').val(), street: $('#hb_snippets_local_st').val(), location: $('#hb_snippets_local_location').val(), postal:$('#hb_snippets_local_postal').val(),
+		   state:$('#hb_snippets_local_state').val(), country:$('#hb_snippets_local_country').val(), store_image:$('#hb_snippets_store_image').val(), price_range:$('#hb_snippets_price_range').val() },
+		  dataType: 'json',
+		  success: function(json) {
+				if (json['success']) {
+						var ss = json['success'];
+					  	$('#hb_snippets_local_snippet').val(ss);
+					   $('#loadgif2').hide();
+				}
+		  },			
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	 });
+}
+function generate_kg(){
+	$.ajax({
+		  type: 'post',
+		  url: 'index.php?route=extension/module/hb_snippets/generatekg&user_token={{ user_token }}',
+		  dataType: 'json',
+		  success: function(json) {
+				if (json['success']) {
+						var ss = json['success'];
+					  	$('#hb_snippets_kg_data').val(ss);
+				}
+		  },			
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	 });
+}
+</script>
+<script type="text/javascript">
+var contact_row = {{ contact_row }};
+function addcontact(){
+html  = '<div class="form-group"  id="contact-row' + contact_row + '"><div class="col-sm-2"></div>';
+html += '<div class="col-sm-4"><input type="text" placeholder="+7-999-123-4567" name="hb_snippets_contact[' + contact_row + '][n]" class="form-control"></div>';
+html += '<div class="col-sm-4"><select name="hb_snippets_contact[' + contact_row + '][t]" class="form-control">';
+html += '<option>Customer Service</option>';
+html += '<option>Customer Support</option>';
+html += '<option>Technical Support</option>';
+html += '<option>Billing Support</option>';
+html += '<option>Bill Payment</option>';
+html += '<option>Sales</option>';
+html += '<option>Reservations</option>';
+html += '<option>Credit Card Support</option>';
+html += '<option>Emergency</option>';
+html += '<option>Baggage Tracking</option>';
+html += '<option>Roadside Assistance</option>';
+html += '<option>Package Tracking</option>';
+html += '</select></div>';
+html += '<div class="col-sm-2"><button type="button" onclick="$(\'#contact-row' + contact_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></div>';
+html += '</div>';
+$('#corp_contact').append(html);
+contact_row++;
+}
+
+var social_row = {{ social_row }};
+function addsocial(){
+html  = '<div class="form-group" id="social-row' + social_row + '"><div class="col-sm-2"></div>';
+html += '<div class="col-sm-8"><input type="text" placeholder="https://www.facebook.com/your-profile" name="hb_snippets_socials[' + social_row + ']" class="form-control"></div>';
+html += '<div class="col-sm-2"><button type="button" onclick="$(\'#social-row' + social_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></div>';
+html += '</div>';
+$('#corp_social').append(html);
+social_row++;
+}
+</script>
+{{ footer }}

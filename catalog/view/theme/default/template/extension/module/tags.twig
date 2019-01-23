@@ -1,0 +1,7 @@
+<div id="tags_cloud">
+	{% if tags %}
+		{% for key, tag in tags %}
+			<a href="{{ tag.href|replace({'&amp;':'&'}) }}">{{ tag.name }}</a>
+		{% endfor %}
+	{% endif %}
+</div>

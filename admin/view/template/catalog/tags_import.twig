@@ -1,0 +1,56 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-import" data-toggle="tooltip" title="{{ button_import }}" class="btn btn-success"><i class="fa fa-upload"></i> {{ button_import }}</button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+				<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-import" class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-file"><span data-toggle="tooltip" title="{{ help_file }}">{{ entry_file }}</span></label>
+						<div class="col-sm-10">
+							<input type="file" name="import_file" id="input-file" class="form-control" />
+							<br>
+							<button type="submit" class="btn btn-success"><i class="fa fa-upload"></i> {{ button_import }}</button>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-data"><span data-toggle="tooltip" title="{{ help_data }}">{{ entry_data }}</span></label>
+						<div class="col-sm-10">
+							<textarea name="import_data" placeholder="{{ help_data }}" id="input-data" rows="8" class="form-control"></textarea>
+							<p class="note">{{ entry_delimiter }}: <code>{{ delimiter }}</code></p>
+		
+							<button type="submit" class="btn btn-success"><i class="fa fa-upload"></i> {{ button_import }}</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div style="background: #233746;color: #ffffff;font-size: 130%;padding: 10px;border-color: #233746;border-radius: 3px;margin-top: 20px;">Еще больше модулей для Opencart 3.x на нашем сайте <a style="color: #fffc00;" href="https://opencart3x.ru/">opencart3x.ru </a>!</div>
+		</div>
+	</div>
+</div>
+{{ footer }}
