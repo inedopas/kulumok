@@ -9,7 +9,7 @@ class ControllerCheckoutCart extends Controller {
 
 		$data['breadcrumbs'][] = array(
 			'href' => $this->url->link('common/home'),
-			'text' => $this->language->get('text_home')ff
+			'text' => $this->language->get('text_home')
 		);
 
 		$data['breadcrumbs'][] = array(
